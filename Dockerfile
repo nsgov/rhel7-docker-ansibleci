@@ -1,5 +1,4 @@
-#FROM rhel7.3:latest
-FROM centos7:latest
+FROM rhel7.3:latest
 MAINTAINER Steven Zinck <steven.zinck@novascotia.ca>
 LABEL Description="This image is the base for GitLab CI for Ansible" Vendor="ICT Services" 
 
