@@ -34,6 +34,7 @@ verifier:
   name: serverspec
   sudo_path: true
 
+#test suite. is there a better way? ie - roles/*/*/*/*rb
 suites:
   - name: default
     verifier:
