@@ -3,8 +3,7 @@ driver:
   name: docker
 
 driver_config:
-  socket: tcp://mg72.cio.gov.ns.ca:4243
-#  socket: <%= ENV['DOCKER_HOST'] %>
+  socket: <%= ENV['DOCKER_HOST'] %>
   use_cache: true
   # privileged: true
   # run_command: bash -c "/usr/bin/dbus-daemon --system --fork && /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no -o PasswordAuthentication=yes -o UsePrivilegeSeparation=no -o PidFile=/tmp/sshd.pid"
