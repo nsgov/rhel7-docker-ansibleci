@@ -1,0 +1,35 @@
+image: gitlab/dind
+
+variables:
+  NAME_SPACE: "INTERNAL_GITLAB_GROUP"
+  DOCKER_REGISTRY: "INTERNAL_GITLAB_INSTANCE"
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - build
+  - release
+
+before_script:
+  - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_REGISTRY}
+
+Build Docker Image:
+  stage: build
+  environment: qa
+  script:
+    - docker build --build-arg VERSION=${VERSION} -t ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${VERSION} .
+    - docker push ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${VERSION}
+  tags:
+    - docker
+
+Tag Latest:
+  stage: release
+  when: manual
+  environment: production
+  script:
+    - docker pull ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${VERSION}
+    - docker tag ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${VERSION} ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:latest
+    - docker push ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:latest
+  only:
+    - master
+  tags:
+    - docker
