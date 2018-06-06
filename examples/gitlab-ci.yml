@@ -18,7 +18,7 @@ ansible-lint:
 ansible-review:
   stage: review
   script: 
-  - find . -name "*.yml" -o -name "*.j2" ! -name ".*.yml" | xargs ansible-review
+  - find . -name "*.yml" -o -name "*.j2" ! -name ".*.yml"  | grep -v vars | xargs ansible-review
 
 test-kitchen:
   stage: integration
