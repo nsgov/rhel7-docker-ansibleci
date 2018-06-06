@@ -5,16 +5,13 @@ driver:
 driver_config:
   socket: <%= ENV['DOCKER_HOST'] %>
   use_cache: true
-  # privileged: true
-  # run_command: bash -c "/usr/bin/dbus-daemon --system --fork && /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no -o PasswordAuthentication=yes -o UsePrivilegeSeparation=no -o PidFile=/tmp/sshd.pid"
-  # volume:
-  #  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  privileged: true
+  use_sudo: false
+  hostname: dockertest.tld
+  volume:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
   provision_command:
-    - yum-config-manager --enable \*satellite*
-    - yum-config-manager --enable \*rhscl*
-    - yum install rubygems -y
-    - gem install --no-ri --no-rdoc bundle
-    - sed -i 's/Defaults    secure_path.*//g' /etc/sudoers
+    - yum install -y hostname
 
 provisioner:
   name: ansible_playbook
@@ -22,17 +19,17 @@ provisioner:
   hosts: localhost
   ansible_verbose: true
   ansible_verbosity: 4
-  # requirements_path: requirements.yml
   require_chef_for_busser: false
+
+verifier:
+  name: inspec
 
 platforms:
   - name: rhel
+    driver_plugin: docker
     driver_config:
-      image: rhel7.3:latest
-
-verifier:
-  name: serverspec
-  sudo_path: true
+      image: rhel7/rhel
+      run_command: /sbin/init
 
 #test suite. is there a better way? ie - roles/*/*/*/*rb
 suites:
