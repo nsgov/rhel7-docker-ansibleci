@@ -1,6 +1,7 @@
 # rhel7-docker-ansibleci
-RHEL 7 base image + ansible, ansible-review &amp; ansible-lint
+RHEL 7 image + Ansible CI/CD tooling
 
-.kitchen.yml - the test kitchen yml file we use.  driver is docker, provisioner ansible_playbook and verifier is serverspec
+## Info
+This repo can be cloned to your GitLab instance to generate a local CI/CD testing image you can use going forward.
 
-.gitlab-ci.yml - gitlab ci configuration for above
+  * **examples** Folder has an example files you can implement for your local ansible project. It will use this image for testing.
