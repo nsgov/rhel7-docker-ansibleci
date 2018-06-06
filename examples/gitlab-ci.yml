@@ -10,6 +10,11 @@ ansible-syntax-check:
   script:
   - find . -maxdepth 1 -name "*yml" ! -name ".*.yml" | xargs ansible-playbook --syntax-checkk 
 
+ansible-lint:
+  stage: review
+  script:
+  - find . -name "*.yml" ! -name ".*.yml" | grep -v vars | xargs ansible-lint
+
 ansible-review:
   stage: review
   script: 
