@@ -1,24 +1,23 @@
-FROM rhel7.3:latest
-MAINTAINER Steven Zinck <steven.zinck@novascotia.ca>
-LABEL Description="This image is the base for GitLab CI for Ansible" Vendor="ICT Services" 
+FROM rhel7/rhel
+MAINTAINER Paul Badcock <paul.badcock@novascotia.ca>
+LABEL Description="Container for for Ansible CI/CD" Vendor="ICT Services"
 
-ENV PATH=/opt/rh/rh-python35/root/usr/bin${PATH:+:${PATH}}
-ENV LD_LIBRARY_PATH=/opt/rh/rh-python35/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-ENV MANPATH=/opt/rh/rh-python35/root/usr/share/man:${MANPATH}
-ENV PKG_CONFIG_PATH=/opt/rh/rh-python35/root/usr/lib64/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}
-ENV XDG_DATA_DIRS=/opt/rh/rh-python35/root/usr/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}
+ENV PATH=/opt/rh/python27/root/usr/bin/${PATH:+:${PATH}}
 
-RUN yum --enablerepo=* install -y rubygems git createrepo ruby-devel docker docker-client sudo openssl-devel libffi-devel gcc rh-python35-python-devel rh-python35-python rh-python35-pip 
+RUN yum --enablerepo=* install -y \
+    ca-certificates openssh-clients curl sqlite-devel \
+    wget vim hostname rubygems ruby ruby-libs ruby-devel \
+    git-core zlib zlib-devel gcc-c++ patch readline \
+    readline-devel libffi-devel openssl-devel libyaml-devel \
+    make bzip2 autoconf automake libtool bison \
+    docker-client sudo \
+    python27-python-devel python27-python-pip \
+    && yum clean all && rm -rf /var/cache/yum
 
-RUN gem install --no-rdoc --no-ri \
- 	bundle \
-	test-kitchen \
-	kitchen-verifier-serverspec \
-	kitchen-docker \
-	kitchen-ansible \
-	serverspec 
+RUN gem install --no-rdoc --no-ri bundle
+ADD Gemfile .
+RUN bundle
 
-RUN pip3 install ansible-lint && pip3 install --upgrade setuptools && pip3 install ansible-review
-RUN mkdir /etc/ansible
-ADD ansible.cfg /etc/ansible/ansible.cfg
-RUN echo -e '[local]\nlocalhost ansible_connection=local' > /etc/ansible/hosts
+RUN scl enable python27 'pip2 install ansible-lint ansible-review'
+
+ADD ansible /etc/ansible
