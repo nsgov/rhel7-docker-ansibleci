@@ -1,0 +1,23 @@
+stages:
+  - syntax
+  - review
+  - integration
+
+test-ansible-syntax-check:
+  image: icts/rhel7-ansible-ci:latest
+  stage: syntax
+  script:
+  - find . -maxdepth 1 -name "*yml" ! -name "*root*" ! -name .kitchen.yml ! -name .gitlab-ci.yml |xargs ansible-playbook --syntax-check 
+
+test-ansible-review:
+  image: icts/rhel7-ansible-ci:latest
+  stage: review
+  script: 
+  - find . -name "*yml" ! -path "*root*" ! -name .kitchen.yml ! -name .gitlab-ci.yml |xargs ansible-review
+
+acceptance-kitchen-rhel:
+  image: icts/rhel7-ansible-ci:latest
+  stage: integration
+  script:
+  - kitchen test 
+  - kitchen destroy
