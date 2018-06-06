@@ -3,6 +3,7 @@ MAINTAINER Paul Badcock <paul.badcock@novascotia.ca>
 LABEL Description="Container for for Ansible CI/CD" Vendor="ICT Services"
 
 ENV PATH=/opt/rh/python27/root/usr/bin/${PATH:+:${PATH}}
+ENV LD_LIBRARY_PATH=/opt/rh/python27/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 
 RUN yum --enablerepo=* install -y \
     ca-certificates openssh-clients curl sqlite-devel \
@@ -18,6 +19,6 @@ RUN gem install --no-rdoc --no-ri bundle
 ADD Gemfile .
 RUN bundle
 
-RUN scl enable python27 'pip2 install ansible-lint ansible-review'
+RUN pip2 install ansible-lint ansible-review
 
 ADD ansible /etc/ansible
