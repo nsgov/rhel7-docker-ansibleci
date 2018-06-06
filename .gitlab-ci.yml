@@ -16,8 +16,8 @@ Build Docker Image:
   stage: build
   environment: qa
   script:
-    - docker build --build-arg VERSION=${VERSION} -t ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${VERSION} .
-    - docker push ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${VERSION}
+    - docker build --build-arg VERSION=${VERSION} -t ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${CI_COMMIT_SHA} .
+    - docker push ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${CI_COMMIT_SHA}
   tags:
     - docker
 
@@ -26,8 +26,8 @@ Tag Latest:
   when: manual
   environment: production
   script:
-    - docker pull ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${VERSION}
-    - docker tag ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${VERSION} ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:latest
+    - docker pull ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${CI_COMMIT_SHA}
+    - docker tag ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:${CI_COMMIT_SHA} ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:latest
     - docker push ${DOCKER_REGISTRY}/${NAME_SPACE}/${CI_PROJECT_NAME}:latest
   only:
     - master
