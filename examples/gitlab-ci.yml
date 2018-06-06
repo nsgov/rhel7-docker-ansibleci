@@ -1,4 +1,4 @@
-image: icts/rhel7-ansible-ci:latest
+image: INTERNAL_REGISTRY_TLD/NAMESPACE/rhel7-docker-ansibleci:latest
 
 stages:
   - syntax
