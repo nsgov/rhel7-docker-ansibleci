@@ -13,7 +13,7 @@ ansible-syntax-check:
 ansible-review:
   stage: review
   script: 
-  - find . -name "*yml" ! -path "*root*" ! -name .kitchen.yml ! -name .gitlab-ci.yml |xargs ansible-review
+  - git ls-files | grep -E '^[^.].*$' | xargs ansible-review
 
 test-kitchen:
   stage: integration
