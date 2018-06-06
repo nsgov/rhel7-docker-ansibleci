@@ -8,7 +8,7 @@ stages:
 ansible-syntax-check: 
   stage: syntax
   script:
-  - find . -maxdepth 1 -name "*yml" ! -name "*root*" ! -name .kitchen.yml ! -name .gitlab-ci.yml |xargs ansible-playbook --syntax-check 
+  - find . -maxdepth 1 -name "*yml" ! -name ".*.yml" | xargs ansible-playbook --syntax-checkk 
 
 ansible-review:
   stage: review
