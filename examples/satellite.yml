@@ -1,0 +1,8 @@
+# Standards: 1.2
+---
+- name: Configure host to Satellite
+  hosts: all
+  become: yes
+  
+  roles:
+  - satellite_registration
