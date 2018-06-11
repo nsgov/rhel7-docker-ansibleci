@@ -25,6 +25,7 @@ With your local information eg:
   DOCKER_HOST: "tcp://docker-a1.mydomain.com:4243"
 ```
 * Confirm the Pipeline builds the container and press the play button to tag it as "latest"
+![playbutton](https://raw.githubusercontent.com/nsgov/rhel7-docker-ansibleci/master/assets/play_button.png)
 * Confirm you can access and run the container with docker commands eg: `docker run -it gitlab-registry.mydomain.com/devops/rhel7-docker-ansibleci ansible --version`
 
 ## CI/CD Setup
@@ -43,6 +44,8 @@ image: gitlab-registry.mydomain.com/devops/rhel7-docker-ansibleci:latest
 
 ## CI/CD usage
 Once set the CI/CD runner should execute the container and run the basic "ansible-playbook --syntax-check" on the first level playbooks in the directory.
+
+![pipeline](https://raw.githubusercontent.com/nsgov/rhel7-docker-ansibleci/master/assets/pipeline.png)
 
 The next stage in "Review" will execute [ansible-lint](https://github.com/willthames/ansible-lint) and [ansible-review](https://github.com/willthames/ansible-review).
 * Ansible-Lint will give you most of the best practices and things to improve.
