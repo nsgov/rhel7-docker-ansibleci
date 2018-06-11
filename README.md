@@ -24,8 +24,10 @@ With your local information eg:
   DOCKER_REGISTRY: "gitlab-registry.mydomain.com"
   DOCKER_HOST: "tcp://docker-a1.mydomain.com:4243"
 ```
-* Confirm the Pipeline builds the container and press the play button to tag it as "latest"
+* Confirm the Pipeline builds the container and press the play button to tag it as "latest".
+
 ![playbutton](https://raw.githubusercontent.com/nsgov/rhel7-docker-ansibleci/master/assets/play_button.png)
+
 * Confirm you can access and run the container with docker commands eg: `docker run -it gitlab-registry.mydomain.com/devops/rhel7-docker-ansibleci ansible --version`
 
 ## CI/CD Setup
